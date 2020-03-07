@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">OpenBeat</string>
+    <string name="tab_text_1">Teams</string>
+    <string name="tab_text_2">Individual</string>
+    <string name="team_name">Team Name</string>
+    <string name="team_score">Total</string>
+    <string name="team_average">Average</string>
+    <string name="team_cards">Players</string>
+    <string name="background">Background</string>
+    <string name="region_name">Region Name</string>
+    <string name="go_to_region">This one!</string>
+    <string name="lead_title">OpenBeat - Leaderboards</string>
+    <string name="rank">Rank</string>
+</resources>
