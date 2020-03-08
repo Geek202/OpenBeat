@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
-        <activity android:name="me.geek.tom.openbeat.RegionSelect"
+        <activity android:name="me.geek.tom.openbeat.RegionSelectActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,12 +26,12 @@
             android:name="me.geek.tom.openbeat.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".RegionSelect">
+            android:parentActivityName=".RegionSelectActivity">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="me.geek.tom.openbeat.RegionSelect" />
+                android:value="me.geek.tom.openbeat.RegionSelectActivity" />
         </activity>
     </application>
 

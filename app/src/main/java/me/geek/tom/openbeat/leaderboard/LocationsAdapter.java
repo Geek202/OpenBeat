@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
@@ -42,17 +43,25 @@ public class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.Cont
 
     public static final String SCHEME_ID = "me.geek.tom.openbeat.SchemeId";
     public static final String SCHEME = "me.geek.tom.openbeat.Scheme";
+    private SwipeRefreshLayout refreshLayout;
 
-    public LocationsAdapter(final Activity activity) {
+    public LocationsAdapter(final Activity activity, SwipeRefreshLayout refresher) {
 
         Utils.updateAndroidSecurityProvider(activity);
 
+        this.refreshLayout = refresher;
+        refresh(activity);
+    }
+
+    public void refresh(final Activity activity) {
+        locations = new ArrayList<>();
         ApiInterface apiInterface = APIClient.getPagedataClient().create(ApiInterface.class);
         Call<PageData> call = apiInterface.getLoginPageData();
         call.enqueue(new Callback<PageData>() {
             @Override
             public void onResponse(Call<PageData> call, Response<PageData> response) {
                 populatePageData(response.body(), activity);
+                refreshLayout.setRefreshing(false);
             }
 
             @Override
@@ -60,7 +69,7 @@ public class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.Cont
                 Logger.info("Oof, failed: " + t.getMessage());
                 call.cancel();
                 Snackbar.make(activity.findViewById(R.id.mainview), "Failed to load!", BaseTransientBottomBar.LENGTH_LONG).show();
-
+                refreshLayout.setRefreshing(false);
             }
         });
     }
