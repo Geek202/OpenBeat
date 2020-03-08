@@ -19,8 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import me.geek.tom.openbeat.Logger;
 import me.geek.tom.openbeat.MainActivity;
 import me.geek.tom.openbeat.R;
+import me.geek.tom.openbeat.Utils;
 import me.geek.tom.openbeat.btsapi.APIClient;
 import me.geek.tom.openbeat.btsapi.ApiInterface;
 import me.geek.tom.openbeat.btsapi.pagedata.Edge;
@@ -37,12 +39,14 @@ public class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.Cont
     private List<Location> locations = new ArrayList<>();
 
     private AtomicInteger itemCount;
-    private List<Edge> es;
 
     public static final String SCHEME_ID = "me.geek.tom.openbeat.SchemeId";
     public static final String SCHEME = "me.geek.tom.openbeat.Scheme";
 
     public LocationsAdapter(final Activity activity) {
+
+        Utils.updateAndroidSecurityProvider(activity);
+
         ApiInterface apiInterface = APIClient.getPagedataClient().create(ApiInterface.class);
         Call<PageData> call = apiInterface.getLoginPageData();
         call.enqueue(new Callback<PageData>() {
@@ -53,9 +57,10 @@ public class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.Cont
 
             @Override
             public void onFailure(Call<PageData> call, Throwable t) {
-                System.out.println("Oof, failed!");
+                Logger.info("Oof, failed: " + t.getMessage());
                 call.cancel();
                 Snackbar.make(activity.findViewById(R.id.mainview), "Failed to load!", BaseTransientBottomBar.LENGTH_LONG).show();
+
             }
         });
     }
@@ -64,7 +69,7 @@ public class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.Cont
         ApiInterface api = APIClient.getApiClient().create(ApiInterface.class);
 
         final List<Edge> edges = data.result.data.allSanityLocality.edges;
-        es = new ArrayList<>(edges);
+        List<Edge> es = new ArrayList<>(edges);
         itemCount = new AtomicInteger(0);
         for (final Edge edge : edges) {
             Call<SchemeInfo> call = api.getSchemeInfo(edge.node.urlSlug);
