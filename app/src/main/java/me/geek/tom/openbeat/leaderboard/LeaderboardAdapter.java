@@ -77,6 +77,7 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
                     public void onResponse(Call<LeaderboardIndiv> call, Response<LeaderboardIndiv> response) {
                         List<Individual> leaderboard = response.body().result;
                         mIndivDataset = new ArrayList<>(leaderboard);
+                        mIndivDataset.add(0, new Individual());
                         LeaderboardAdapter.this.notifyDataSetChanged();
                         LeaderboardAdapter.this.refreshLayout.setRefreshing(false);
                     }

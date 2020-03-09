@@ -6,7 +6,7 @@ public class Individual {
 
     @SerializedName("UserName")
     @Expose
-    public String userName;
+    public String userName = "__blank__";
     @SerializedName("Points")
     @Expose
     public Integer points;
